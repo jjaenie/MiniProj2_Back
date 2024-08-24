@@ -52,7 +52,7 @@ public class User {
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private Set<UserImage> images;
 
-//    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-//    Set<Comment>comments;
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    Set<Comment>comments;
 
 }
