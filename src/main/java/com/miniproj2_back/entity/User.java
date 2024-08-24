@@ -2,13 +2,17 @@ package com.miniproj2_back.entity;
 
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.antlr.v4.runtime.misc.NotNull;
 
 import java.util.Set;
 
 @Data
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table (name = "users")
 public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,12 +39,15 @@ public class User {
 
 //    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
 //    Set<Follow> following;
+
 //    @OneToMany(mappedBy = "following",cascade = CascadeType.ALL)
 //    Set<Follow> followers;
-//    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-//    Set<Post> posts;
-//    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-//    Set<Like> likes;
+
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    Set<Post> posts;
+
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    Set<Like> likes;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private Set<UserImage> images;
