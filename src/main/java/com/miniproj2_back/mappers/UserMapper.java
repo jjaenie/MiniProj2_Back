@@ -1,7 +1,10 @@
 package com.miniproj2_back.mappers;
 
+import com.miniproj2_back.entity.Follow;
 import com.miniproj2_back.entity.User;
 import com.miniproj2_back.requests.UserAddRequest;
+import com.miniproj2_back.responses.user.UserFollowerResponse;
+import com.miniproj2_back.responses.user.UserFollowingResponse;
 import com.miniproj2_back.responses.user.UserResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -19,22 +22,24 @@ public interface UserMapper {
     @Mapping(source = "name", target = "name")
     @Mapping(source = "lastName", target = "lastName")
     @Mapping(source = "email", target = "email")
+    @Mapping(source = "followers", target = "followers")
+    @Mapping(source = "following", target = "following")
     UserResponse userToResponse(User user);
 
 
-    // @Mapping(source = "user.id", target = "userId")
-    // @Mapping(source = "user.name", target = "name")
-    // @Mapping(source = "user.lastName", target = "lastName")
-    // UserFollowerResponse followToFollowerResponse(Follow follow);
+     @Mapping(source = "user.id", target = "userId")
+     @Mapping(source = "user.name", target = "name")
+     @Mapping(source = "user.lastName", target = "lastName")
+     UserFollowerResponse followToFollowerResponse(Follow follow);
 
-    // @Mapping(source = "following.id", target = "userId")
-    // @Mapping(source = "following.lastName", target = "lastName")
-    // @Mapping(source = "following.name", target = "name")
-    // UserFollowingResponse followToFollowingResponse(Follow follow);
+     @Mapping(source = "following.id", target = "userId")
+     @Mapping(source = "following.lastName", target = "lastName")
+     @Mapping(source = "following.name", target = "name")
+     UserFollowingResponse followToFollowingResponse(Follow follow);
 
-    // @Mapping(source = "followers", target = "followers")
-    // @Mapping(source = "following", target = "following")
-    // UserResponse userToResponse(User user);
+//     @Mapping(source = "followers", target = "followers")
+//     @Mapping(source = "following", target = "following")
+//     UserResponse userToResponse(User user);
 
-    // List<UserFollowingResponse> followsToFollowingResponses(List<Follow> follows);
+     List<UserFollowingResponse> followsToFollowingResponses(List<Follow> follows);
 }

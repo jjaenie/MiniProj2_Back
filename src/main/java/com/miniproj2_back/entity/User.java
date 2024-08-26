@@ -37,11 +37,13 @@ public class User {
     @Column(name = "password")
     private String password;
 
-//    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-//    Set<Follow> following;
 
-//    @OneToMany(mappedBy = "following",cascade = CascadeType.ALL)
-//    Set<Follow> followers;
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    Set<Follow> following;
+
+    @OneToMany(mappedBy = "following",cascade = CascadeType.ALL)
+    Set<Follow> followers;
+
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     Set<Post> posts;
