@@ -10,6 +10,7 @@ import com.miniproj2_back.responses.user.UserFollowingResponse;
 import com.miniproj2_back.responses.user.UserResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,12 +33,21 @@ public class UserService {
     }
 
     public List<UserResponse> getAll(){
-
         return userMapper.usersToResponses(userRepository.findAll());
     }
+
+    @Transactional
     public UserResponse getResponseById(int id){
         User user = userRepository.findById(id).orElse(null);
-        return userMapper.userToResponse(user);
+        if (user != null) {
+            UserResponse response = userMapper.userToResponse(user);
+            List<Follow> followers = followRepository.findAllByFollowing_Id(id);
+            List<Follow> following = followRepository.findAllByUser_Id(id);
+            response.setFollowers(userMapper.followsToFollowerResponses(followers));
+            response.setFollowing(userMapper.followsToFollowingResponses(following));
+            return response;
+        }
+        return null;
     }
 
     public UserResponse getByEmail(String email){
@@ -55,8 +65,9 @@ public class UserService {
     }
 
     public User getById(int id){
-        return userRepository.findById(id).get();
+        return userRepository.findById(id).orElse(null);
     }
+
     public void add(UserAddRequest userAddRequest){
         User user = userMapper.requestToUser(userAddRequest);
         userRepository.save(user);
