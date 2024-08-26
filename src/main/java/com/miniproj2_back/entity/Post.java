@@ -28,6 +28,6 @@ public class Post {
     @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
     Set<PostImage> postImages;
 
-//    @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
-//    Set<Comment> comments;
+    @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
+    Set<Comment> comments;
 }

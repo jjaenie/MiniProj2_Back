@@ -1,5 +1,6 @@
 package com.miniproj2_back.controller;
 
+import com.miniproj2_back.requests.UserAddRequest;
 import com.miniproj2_back.responses.user.UserResponse;
 import com.miniproj2_back.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,16 +30,16 @@ public class UserController {
         return new ResponseEntity<>(userService.getResponseById(id),HttpStatus.OK);
     }
 
-//    @GetMapping("/isfollowing")
-//    public ResponseEntity<Boolean> isFollowing(@RequestParam int userId, @RequestParam int followingId){
-//        return new ResponseEntity<>(userService.isFollowing(userId,followingId),HttpStatus.OK);
-//    }
-//
-//    @PostMapping("/add")
-//    public ResponseEntity<String> add(@RequestBody UserAddRequest userAddRequest){
-//        userService.add(userAddRequest);
-//        return new ResponseEntity<>("User Added",HttpStatus.CREATED);
-//    }
+    @GetMapping("/isfollowing")
+    public ResponseEntity<Boolean> isFollowing(@RequestParam int userId, @RequestParam int followingId){
+        return new ResponseEntity<>(userService.isFollowing(userId,followingId),HttpStatus.OK);
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<String> add(@RequestBody UserAddRequest userAddRequest){
+        userService.add(userAddRequest);
+        return new ResponseEntity<>("User Added",HttpStatus.CREATED);
+    }
 
     @DeleteMapping("/delete")
     public ResponseEntity<Void> delete(@RequestParam int id){

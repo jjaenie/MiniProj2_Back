@@ -1,14 +1,18 @@
 package com.miniproj2_back.service;
 
+import com.miniproj2_back.entity.Follow;
 import com.miniproj2_back.mappers.UserMapper;
 import com.miniproj2_back.entity.User;
+import com.miniproj2_back.repository.FollowRepository;
 import com.miniproj2_back.repository.UserRepository;
 import com.miniproj2_back.requests.UserAddRequest;
+import com.miniproj2_back.responses.user.UserFollowingResponse;
 import com.miniproj2_back.responses.user.UserResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -18,18 +22,14 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    //private final FollowRepository followRepository;
+    @Autowired
+    private FollowRepository followRepository;
 
-//    public UserService(UserMapper userMapper, UserRepository userRepository, FollowRepository followRepository) {
-//        this.userMapper = userMapper;
-//        this.userRepository = userRepository;
-//        this.followRepository = followRepository;
-//    }
-
-public UserService(UserMapper userMapper, UserRepository userRepository) {
-    this.userMapper = userMapper;
-    this.userRepository = userRepository;
-}
+    public UserService(UserMapper userMapper, UserRepository userRepository, FollowRepository followRepository) {
+        this.userMapper = userMapper;
+        this.userRepository = userRepository;
+        this.followRepository = followRepository;
+    }
 
     public List<UserResponse> getAll(){
 
@@ -45,14 +45,14 @@ public UserService(UserMapper userMapper, UserRepository userRepository) {
         return userMapper.userToResponse(user);
     }
 
-//    public List<UserFollowingResponse> getUserFollowing(int userId){
-//        return userMapper.followsToFollowingResponses(followRepository.findAllByUser_Id(userId));
-//    }
-//
-//    public boolean isFollowing(int userId,int followingId){
-//        Optional<Follow> follow = followRepository.findByUser_IdAndFollowing_Id(userId,followingId);
-//        return follow.isPresent();
-//    }
+    public List<UserFollowingResponse> getUserFollowing(int userId){
+        return userMapper.followsToFollowingResponses(followRepository.findAllByUser_Id(userId));
+    }
+
+    public boolean isFollowing(int userId,int followingId){
+        Optional<Follow> follow = followRepository.findByUser_IdAndFollowing_Id(userId,followingId);
+        return follow.isPresent();
+    }
 
     public User getById(int id){
         return userRepository.findById(id).get();
