@@ -6,28 +6,28 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.antlr.v4.runtime.misc.NotNull;
 
-@Data
 @Entity
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "user_images")
-public class UserImage {
+@Table(name = "comments")
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private  int id;
+    private int id;
 
-    @Column(name = "name")
-    private String name;
+    @NotNull
+    @Column(name = "description")
+    private String description;
 
-    @Column(name = "type")
-    private String type;
-
-    @Column(name = "data",length = 1000)
-    private byte[] data;
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "post_id")
+    Post post;
 
     @NotNull
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    User user;
 }

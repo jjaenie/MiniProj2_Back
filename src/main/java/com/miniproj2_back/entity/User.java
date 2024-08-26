@@ -2,13 +2,17 @@ package com.miniproj2_back.entity;
 
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.antlr.v4.runtime.misc.NotNull;
 
 import java.util.Set;
 
 @Data
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table (name = "users")
 public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,11 +37,13 @@ public class User {
     @Column(name = "password")
     private String password;
 
+
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     Set<Follow> following;
 
     @OneToMany(mappedBy = "following",cascade = CascadeType.ALL)
     Set<Follow> followers;
+
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     Set<Post> posts;
@@ -48,7 +54,7 @@ public class User {
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private Set<UserImage> images;
 
-//    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-//    Set<Comment>comments;
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    Set<Comment>comments;
 
 }
