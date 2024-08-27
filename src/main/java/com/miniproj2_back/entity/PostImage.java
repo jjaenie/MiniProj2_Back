@@ -23,12 +23,8 @@ public class PostImage {
     @Column(name = "type")
     private String type;
 
-//    @Column(name = "data")
-//    private byte[] data;
-
-    @Column(name = "path")
-    private String path;
-
+    @Column(name = "data",length = 1000)
+    private byte[] data;
     @NotNull
     @ManyToOne
     @JoinColumn(name = "post_id")
