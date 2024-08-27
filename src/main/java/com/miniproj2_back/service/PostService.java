@@ -25,20 +25,24 @@ public class PostService {
     @Autowired
     private UserService userService;
 
-    public PostService(PostRepository postRepository, PostMapper postMapper, UserService userService) {
+    @Autowired
+    private PostImageService postImageService;
+
+    public PostService(PostRepository postRepository, PostMapper postMapper, UserService userService, PostImageService postImageService) {
         this.postRepository = postRepository;
         this.postMapper = postMapper;
         this.userService = userService;
+        this.postImageService = postImageService;
     }
 
     public List<PostGetResponse> getAll(){
         List<Post> posts = postRepository.findAll();
-        return  postMapper.postsToGetResponses(posts);
+        return mapPostsToGetResponsesWithImages(posts);
     }
 
     public PostGetResponse getResponseById(int id){
         Post post = postRepository.findById(id).orElse(null);
-        return postMapper.postToGetResponse(post);
+        return mapPostToGetResponseWithImage(post);
     }
 
     public Post getById(int id){
@@ -47,7 +51,7 @@ public class PostService {
 
     public List<PostGetResponse> getAllByUser(int userId){
         List<Post> userPosts = postRepository.findAllByUser_IdOrderByIdDesc(userId);
-        return postMapper.postsToGetResponses(userPosts);
+        return mapPostsToGetResponsesWithImages(userPosts);
     }
 
     public List<PostGetResponse> getByUserFollowing(int userId) {
@@ -60,7 +64,7 @@ public class PostService {
 
         set.sort(Comparator.comparing(Post::getId).reversed());
 
-        return postMapper.postsToGetResponses(set);
+        return mapPostsToGetResponsesWithImages(set);
     }
 
     public int add(PostAddRequest postAddRequest){
@@ -71,5 +75,22 @@ public class PostService {
 
     public void delete(int id){
         postRepository.deleteById(id);
+    }
+
+    // Post 목록을 이미지 존재 여부를 포함한 PostGetResponse로 변환하는 메소드
+    private List<PostGetResponse> mapPostsToGetResponsesWithImages(List<Post> posts) {
+        List<PostGetResponse> responses = new ArrayList<>();
+        for (Post post : posts) {
+            responses.add(mapPostToGetResponseWithImage(post));
+        }
+        return responses;
+    }
+
+    // 단일 Post를 이미지 존재 여부를 포함한 PostGetResponse로 변환하는 메소드
+    private PostGetResponse mapPostToGetResponseWithImage(Post post) {
+        PostGetResponse response = postMapper.postToGetResponse(post);
+        boolean hasImage = postImageService.hasImage(post.getId());
+        response.setHasImage(hasImage);  // 수동으로 hasImage 필드를 설정
+        return response;
     }
 }

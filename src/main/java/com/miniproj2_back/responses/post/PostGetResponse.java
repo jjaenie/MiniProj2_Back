@@ -13,4 +13,5 @@ public class PostGetResponse {
     private String userName;
     private String userLastName;
     private String Description;
+    private boolean hasImage;  // 이미지 존재 여부를 나타내는 필드 추가
 }
