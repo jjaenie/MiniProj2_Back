@@ -3,9 +3,11 @@ package com.miniproj2_back.service;
 import com.miniproj2_back.entity.PostImage;
 import com.miniproj2_back.mappers.PostImageMapper;
 import com.miniproj2_back.repository.PostImageRepository;
+import com.miniproj2_back.repository.PostRepository;
 import com.miniproj2_back.responses.post.PostImageResponse;
 import com.miniproj2_back.utils.ImageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,15 +25,15 @@ public class PostImageService {
     @Autowired
     private PostImageRepository postImageRepository;
 
-    @Autowired
-    private PostService postService;
 
     @Autowired
     private PostImageMapper postImageMapper;
 
-    public PostImageService(PostImageRepository postImageRepository, PostService postService, PostImageMapper postImageMapper) {
+    @Autowired
+    private PostRepository postRepository;
+
+    public PostImageService(PostImageRepository postImageRepository, PostImageMapper postImageMapper) {
         this.postImageRepository = postImageRepository;
-        this.postService = postService;
         this.postImageMapper = postImageMapper;
     }
 
@@ -56,7 +58,8 @@ public class PostImageService {
         postImage.setName(uniqueFilename);  // 고유한 파일 이름을 저장
         postImage.setType(file.getContentType());
         postImage.setPath(filePath.toString());  // 파일 경로를 저장
-        postImage.setPost(postService.getById(postId));
+        //postImage.setPost(postService.getById(postId));
+        postImage.setPost(postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("Invalid post ID")));
         postImageRepository.save(postImage);
 
         return postImageMapper.imageToResponse(postImage);
@@ -70,6 +73,8 @@ public class PostImageService {
         return null;
     }
 
-
+    public boolean hasImage(int postId) {
+        return postImageRepository.existsByPost_Id(postId);
+    }
 
 }

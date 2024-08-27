@@ -8,4 +8,7 @@ import java.util.Optional;
 
 public interface PostImageRepository extends JpaRepository<PostImage, Integer> {
     Optional<PostImage> findPostImageByPost_Id(int postId);
+
+    // 특정 Post ID에 이미지가 존재하는지 확인하는 메서드 추가
+    boolean existsByPost_Id(int postId);
 }
