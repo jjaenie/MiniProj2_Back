@@ -22,24 +22,20 @@ public interface UserMapper {
     @Mapping(source = "name", target = "name")
     @Mapping(source = "lastName", target = "lastName")
     @Mapping(source = "email", target = "email")
-    @Mapping(source = "followers", target = "followers")
-    @Mapping(source = "following", target = "following")
+    @Mapping(target = "followers", ignore = true)
+    @Mapping(target = "following", ignore = true)
     UserResponse userToResponse(User user);
 
+    @Mapping(source = "user.id", target = "userId")
+    @Mapping(source = "user.name", target = "name")
+    @Mapping(source = "user.lastName", target = "lastName")
+    UserFollowerResponse followToFollowerResponse(Follow follow);
 
-     @Mapping(source = "user.id", target = "userId")
-     @Mapping(source = "user.name", target = "name")
-     @Mapping(source = "user.lastName", target = "lastName")
-     UserFollowerResponse followToFollowerResponse(Follow follow);
+    @Mapping(source = "following.id", target = "userId")
+    @Mapping(source = "following.lastName", target = "lastName")
+    @Mapping(source = "following.name", target = "name")
+    UserFollowingResponse followToFollowingResponse(Follow follow);
 
-     @Mapping(source = "following.id", target = "userId")
-     @Mapping(source = "following.lastName", target = "lastName")
-     @Mapping(source = "following.name", target = "name")
-     UserFollowingResponse followToFollowingResponse(Follow follow);
-
-//     @Mapping(source = "followers", target = "followers")
-//     @Mapping(source = "following", target = "following")
-//     UserResponse userToResponse(User user);
-
-     List<UserFollowingResponse> followsToFollowingResponses(List<Follow> follows);
+    List<UserFollowerResponse> followsToFollowerResponses(List<Follow> follows);
+    List<UserFollowingResponse> followsToFollowingResponses(List<Follow> follows);
 }

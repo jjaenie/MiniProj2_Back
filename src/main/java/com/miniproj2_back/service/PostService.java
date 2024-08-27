@@ -5,6 +5,7 @@ import com.miniproj2_back.mappers.PostMapper;
 import com.miniproj2_back.repository.PostRepository;
 import com.miniproj2_back.requests.PostAddRequest;
 import com.miniproj2_back.responses.post.PostGetResponse;
+import com.miniproj2_back.responses.user.UserFollowingResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,13 +50,13 @@ public class PostService {
         return postMapper.postsToGetResponses(userPosts);
     }
 
-    public List<PostGetResponse> getByUserFollowing(int userId){
-//        List<UserFollowingResponse> follows = userService.getUserFollowing(userId);
+    public List<PostGetResponse> getByUserFollowing(int userId) {
+        List<UserFollowingResponse> follows = userService.getUserFollowing(userId);
         List<Post> set = new ArrayList<>();
 
-//        for(UserFollowingResponse user : follows){
-//            set.addAll(postRepository.findAllByUser_IdOrderByIdDesc(user.getUserId()));
-//        }
+        for(UserFollowingResponse user : follows) {
+            set.addAll(postRepository.findAllByUser_IdOrderByIdDesc(user.getUserId()));
+        }
 
         set.sort(Comparator.comparing(Post::getId).reversed());
 
