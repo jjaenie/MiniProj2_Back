@@ -46,4 +46,15 @@ public class UserController {
         userService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    // 이메일로 사용자를 검색하는 엔드포인트 추가
+    @GetMapping("/search/{email}")
+    public ResponseEntity<UserResponse> searchByEmail(@PathVariable String email) {
+        UserResponse userResponse = userService.getByEmail(email);
+        if (userResponse != null) {
+            return new ResponseEntity<>(userResponse, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }
