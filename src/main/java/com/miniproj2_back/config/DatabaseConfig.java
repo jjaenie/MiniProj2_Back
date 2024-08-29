@@ -9,17 +9,17 @@ import org.springframework.context.annotation.PropertySource;
 
 import javax.sql.DataSource;
 
-@Configuration
-@PropertySource("classpath:/application.properties")
+//@Configuration
+//@PropertySource("classpath:/application.properties")
 public class DatabaseConfig {
 
-    @Bean
-    @ConfigurationProperties(prefix = "spring.datasource.hikari")
+//    @Bean
+//    @ConfigurationProperties(prefix = "spring.datasource.hikari")
     public HikariConfig hikariConfig() {
         return new HikariConfig();
     }
 
-    @Bean
+//    @Bean
     public DataSource dataSource(HikariConfig hikariConfig) {
         HikariDataSource dataSource = new HikariDataSource(hikariConfig);
         System.out.println(dataSource.toString());
